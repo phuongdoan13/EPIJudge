@@ -25,9 +25,9 @@ public class Knapsack {
     return recursive(items, capacity, memo, 0);
   }
   private static int recursive(List<Item> items, int remaining_capacity, Integer[][] memo, int i){
-    if(i >= items.size() || remaining_capacity < 0) return 0;
+    if(i >= items.size()) return 0;
     if(memo[remaining_capacity][i] != null) return memo[remaining_capacity][i];
-    int withCurr = recursive(items, remaining_capacity - items.get(i).weight, memo, i + 1);
+    int withCurr = (remaining_capacity - items.get(i).weight >= 0) ? items.get(i).value + recursive(items, remaining_capacity - items.get(i).weight, memo, i + 1) : 0;
     int withoutCurr = recursive(items, remaining_capacity, memo, i + 1);
     memo[remaining_capacity][i] = Math.max(withoutCurr, withCurr);
     return memo[remaining_capacity][i];
