@@ -20,8 +20,17 @@ public class Knapsack {
   @EpiTest(testDataFile = "knapsack.tsv")
 
   public static int optimumSubjectToCapacity(List<Item> items, int capacity) {
-    // TODO - you fill in here.
-    return 0;
+    Integer[][] memo = new Integer[capacity + 1][items.size()];
+
+    return recursive(items, capacity, memo, 0);
+  }
+  private static int recursive(List<Item> items, int remaining_capacity, Integer[][] memo, int i){
+    if(i >= items.size() || remaining_capacity < 0) return 0;
+    if(memo[remaining_capacity][i] != null) return memo[remaining_capacity][i];
+    int withCurr = recursive(items, remaining_capacity - items.get(i).weight, memo, i + 1);
+    int withoutCurr = recursive(items, remaining_capacity, memo, i + 1);
+    memo[remaining_capacity][i] = Math.max(withoutCurr, withCurr);
+    return memo[remaining_capacity][i];
   }
 
   public static void main(String[] args) {
